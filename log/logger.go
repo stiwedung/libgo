@@ -130,11 +130,11 @@ outter:
 	logger.wg.Done()
 }
 
-func (logger *Logger) Debug(msg string) {
+func (logger *Logger) Debug(args ...interface{}) {
 	if logger.level > DebugLevel {
 		return
 	}
-	logger.log(DebugLevel, msg)
+	logger.log(DebugLevel, fmt.Sprint(args...))
 }
 
 func (logger *Logger) Debugf(format string, args ...interface{}) {
@@ -145,11 +145,11 @@ func (logger *Logger) Debugf(format string, args ...interface{}) {
 	logger.log(DebugLevel, msg)
 }
 
-func (logger *Logger) Info(msg string) {
+func (logger *Logger) Info(args ...interface{}) {
 	if logger.level > InfoLevel {
 		return
 	}
-	logger.log(InfoLevel, msg)
+	logger.log(InfoLevel, fmt.Sprint(args...))
 }
 
 func (logger *Logger) Infof(format string, args ...interface{}) {
@@ -160,11 +160,11 @@ func (logger *Logger) Infof(format string, args ...interface{}) {
 	logger.log(InfoLevel, msg)
 }
 
-func (logger *Logger) Warn(msg string) {
+func (logger *Logger) Warn(args ...interface{}) {
 	if logger.level > WarnLevel {
 		return
 	}
-	logger.log(WarnLevel, msg)
+	logger.log(WarnLevel, fmt.Sprint(args...))
 }
 
 func (logger *Logger) Warnf(format string, args ...interface{}) {
@@ -175,11 +175,11 @@ func (logger *Logger) Warnf(format string, args ...interface{}) {
 	logger.log(WarnLevel, msg)
 }
 
-func (logger *Logger) Error(msg string) {
+func (logger *Logger) Error(args ...interface{}) {
 	if logger.level > ErrorLevel {
 		return
 	}
-	logger.log(ErrorLevel, msg)
+	logger.log(ErrorLevel, fmt.Sprint(args...))
 }
 
 func (logger *Logger) Errorf(format string, args ...interface{}) {
@@ -190,11 +190,11 @@ func (logger *Logger) Errorf(format string, args ...interface{}) {
 	logger.log(ErrorLevel, msg)
 }
 
-func (logger *Logger) Fatal(msg string) {
+func (logger *Logger) Fatal(args ...interface{}) {
 	if logger.level > FatalLevel {
 		return
 	}
-	logger.log(FatalLevel, msg)
+	logger.log(FatalLevel, fmt.Sprint(args...))
 }
 
 func (logger *Logger) Fatalf(format string, args ...interface{}) {

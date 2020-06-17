@@ -18,40 +18,40 @@ func Close() {
 	std.Close()
 }
 
-func Debug(msg string) {
-	std.Debug(msg)
+func Debug(args ...interface{}) {
+	std.Debug(args...)
 }
 
 func Debugf(format string, args ...interface{}) {
 	std.Debugf(format, args...)
 }
 
-func Info(msg string) {
-	std.Info(msg)
+func Info(args ...interface{}) {
+	std.Info(args...)
 }
 
 func Infof(format string, args ...interface{}) {
 	std.Infof(format, args...)
 }
 
-func Warn(msg string) {
-	std.Warn(msg)
+func Warn(args ...interface{}) {
+	std.Warn(args...)
 }
 
 func Warnf(format string, args ...interface{}) {
 	std.Warnf(format, args...)
 }
 
-func Error(msg string) {
-	std.Error(msg)
+func Error(args ...interface{}) {
+	std.Error(args...)
 }
 
 func Errorf(format string, args ...interface{}) {
 	std.Errorf(format, args...)
 }
 
-func Fatal(msg string) {
-	std.Fatal(msg)
+func Fatal(args ...interface{}) {
+	std.Fatal(args...)
 }
 
 func Fatalf(format string, args ...interface{}) {
