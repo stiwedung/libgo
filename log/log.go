@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-var std = NewLogger(os.Stdout, WriteCallerOption(true), LevelOption(DebugLevel), SkipOption(3))
+var std = NewLogger(os.Stdout, LevelOption(DebugLevel), SkipOption(3))
 
 func GetLogger() *Logger {
 	return std

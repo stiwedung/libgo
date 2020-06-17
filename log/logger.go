@@ -49,6 +49,12 @@ type Logger struct {
 	skip    int
 }
 
+func (logger *Logger) WithOption(opts ...Option) {
+	for _, opt := range opts {
+		opt(logger)
+	}
+}
+
 func (logger *Logger) requireLog() *log {
 	return logger.pool.Get().(*log)
 }
