@@ -92,7 +92,7 @@ func (rb *rbtree) rightRotate(n *node) {
 	}
 }
 
-func (rb *rbtree) adjust(n *node) {
+func (rb *rbtree) adjustOnAdd(n *node) {
 	p := n.parent
 	if p == nil { // n is root node
 		n.red = false
@@ -119,13 +119,13 @@ func (rb *rbtree) adjust(n *node) {
 			rb.rightRotate(gp)
 		} else {
 			rb.leftRotate(p)
-			rb.adjust(p)
+			rb.adjustOnAdd(p)
 		}
 	} else {
 		p.red = false
 		un.red = false
 		gp.red = true
-		rb.adjust(gp)
+		rb.adjustOnAdd(gp)
 	}
 }
 
@@ -144,7 +144,7 @@ func (rb *rbtree) Add(x RBNoder) bool {
 				nt.val = x
 				nt.parent = n
 				n.right = nt
-				rb.adjust(nt)
+				rb.adjustOnAdd(nt)
 				return true
 			}
 			n = n.right
@@ -154,7 +154,7 @@ func (rb *rbtree) Add(x RBNoder) bool {
 				nt.val = x
 				nt.parent = n
 				n.left = nt
-				rb.adjust(nt)
+				rb.adjustOnAdd(nt)
 				return true
 			}
 			n = n.left
@@ -163,25 +163,79 @@ func (rb *rbtree) Add(x RBNoder) bool {
 	return false
 }
 
+func (rb *rbtree) adjustOnDel(n *node) {
+	p := n.parent
+	if p == nil {
+		n.red = false
+		return
+	}
+	var bo *node
+	if n == p.left {
+		bo = p.right
+	} else {
+		bo = p.left
+	}
+	if bo != nil && bo.red {
+		if p.left == bo {
+			rb.rightRotate(p)
+		} else {
+			rb.leftRotate(p)
+		}
+		bo.red = false
+		p.red = true
+		return
+	}
+	boLeftRed := bo.left != nil && bo.left.red
+	boRightRed := bo.right != nil && bo.right.red
+	if p.left == bo && boLeftRed {
+		rb.rightRotate(p)
+
+	}
+}
+
 func (rb *rbtree) del(n *node) {
+	var nt *node
 	if n.left == nil || n.right == nil {
-		nt := n.left
+		nt = n.left
 		if n.right != nil {
 			nt = n.right
 		}
-		if n.parent != nil {
-			if n.parent.left == n {
-				n.parent.left = nt
-			} else {
-				n.parent.right = nt
-			}
+	} else {
+		nt = n.left
+		right := nt.right
+		for right != nil {
+			nt = right
+			right = nt.right
+		}
+		nt.parent.right = nt.left
+		if nt.left != nil {
+			nt.left.parent = nt.parent
+		}
+		nt.parent = n.parent
+		nt.left = n.left
+		nt.right = n.right
+	}
+	if n.parent != nil {
+		if n.parent.left == n {
+			n.parent.left = nt
 		} else {
-			rb.root = nt
+			n.parent.right = nt
 		}
 	} else {
-
+		rb.root = nt
+		if nt != nil {
+			nt.red = false
+		}
 	}
 	rb.put(n)
+	if nt != nil && nt.red {
+		nt.red = false
+		return
+	}
+	if rb.root == nt {
+		return
+	}
+	rb.adjustOnDel(nt)
 }
 
 func (rb *rbtree) Del(x RBNoder) (ret bool) {
